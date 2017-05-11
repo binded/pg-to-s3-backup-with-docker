@@ -14,9 +14,12 @@ datestr=$(date +%Y-%m-%d)
 # PGUSER
 
 # TODO: streaming copy
+mkdir -p /tmp/backups/
+
 for db in "${databases[@]}"; do
-  pg_dump -d "$db" >> /tmp/db.out
+  pg_dump -d "$db" >> "/tmp/backups/${db}.out"
 done
 
+tar czf /tmp/dbs.tar.gz -C /tmp backups/
 
-aws s3 cp /tmp/db.out "s3://${s3_bucket_name}/${backup_type}/pg-backup-${datestr}.dump"
+aws s3 cp /tmp/dbs.tar.gz "s3://${s3_bucket_name}/${backup_type}/pg-backup-${datestr}.tar.gz"
