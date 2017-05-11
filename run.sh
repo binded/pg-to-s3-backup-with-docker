@@ -17,7 +17,7 @@ datestr=$(date +%Y-%m-%d)
 mkdir -p /tmp/backups/
 
 for db in "${databases[@]}"; do
-  pg_dump --create -d "$db" >> "/tmp/backups/${db}"
+  pg_dump -d "$db" >> "/tmp/backups/${db}"
 done
 
 tar czf /tmp/dbs.tar.gz -C /tmp backups/
